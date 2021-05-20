@@ -22,8 +22,8 @@ Pod::Spec.new do |s|
 
   s.module_name = 'UncommonCrypto'
 
-  s.source_files = 'Sources/UncommonCrypto/*.swift', 'Sources/UncommonCrypto/**/*.{h,c}'
-  s.public_header_files = 'Sources/UncommonCrypto/include/*.h'
+  s.source_files = 'Sources/UncommonCrypto/*.swift', 'Sources/CUncommonCrypto/**/*.{h,c}'
+  s.public_header_files = 'Sources/CUncommonCrypto/include/*.h'
  
   s.test_spec 'Tests' do |test_spec|
     test_spec.platforms = {:ios => '9.0', :osx => '10.10', :tvos => '9.0'}
