@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if !COCOAPODS
 import CUncommonCrypto
+#endif
 
 public struct SHA3 {
     public enum SType {
