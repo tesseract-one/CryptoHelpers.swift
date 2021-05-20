@@ -47,7 +47,7 @@
 // Adapted from
 // https://github.com/jedisct1/libsodium/blob/1647f0d53ae0e370378a9195477e3df0a792408f/src/libsodium/sodium/utils.c#L102-L130
 
-void memzero(void *const pnt, const size_t len) {
+void uc_memzero(void *const pnt, const size_t len) {
 #ifdef _WIN32
     SecureZeroMemory(pnt, len);
 #elif defined(HAVE_MEMSET_S)

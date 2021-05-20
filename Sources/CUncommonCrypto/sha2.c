@@ -282,7 +282,7 @@ static const char *sha2_hex_digits = "0123456789abcdef";
 /*** SHA-1: ***********************************************************/
 void sha1_Init(SHA1_CTX* context) {
 	MEMCPY_BCOPY(context->state, sha1_initial_hash_value, SHA1_DIGEST_LENGTH);
-	memzero(context->buffer, SHA1_BLOCK_LENGTH);
+	uc_memzero(context->buffer, SHA1_BLOCK_LENGTH);
 	context->bitcount = 0;
 }
 
@@ -587,7 +587,7 @@ void sha1_Final(SHA1_CTX* context, sha2_byte digest[]) {
 		((uint8_t*)context->buffer)[usedspace++] = 0x80;
 
 		if (usedspace > SHA1_SHORT_BLOCK_LENGTH) {
-			memzero(((uint8_t*)context->buffer) + usedspace, SHA1_BLOCK_LENGTH - usedspace);
+			uc_memzero(((uint8_t*)context->buffer) + usedspace, SHA1_BLOCK_LENGTH - usedspace);
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 			/* Convert TO host byte order */
@@ -602,7 +602,7 @@ void sha1_Final(SHA1_CTX* context, sha2_byte digest[]) {
 			usedspace = 0;
 		}
 		/* Set-up for the last transform: */
-		memzero(((uint8_t*)context->buffer) + usedspace, SHA1_SHORT_BLOCK_LENGTH - usedspace);
+		uc_memzero(((uint8_t*)context->buffer) + usedspace, SHA1_SHORT_BLOCK_LENGTH - usedspace);
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 		/* Convert TO host byte order */
@@ -627,7 +627,7 @@ void sha1_Final(SHA1_CTX* context, sha2_byte digest[]) {
 	}
 
 	/* Clean up state data: */
-	memzero(context, sizeof(SHA1_CTX));
+	uc_memzero(context, sizeof(SHA1_CTX));
 	usedspace = 0;
 }
 
@@ -645,9 +645,9 @@ char *sha1_End(SHA1_CTX* context, char buffer[]) {
 		}
 		*buffer = (char)0;
 	} else {
-		memzero(context, sizeof(SHA1_CTX));
+		uc_memzero(context, sizeof(SHA1_CTX));
 	}
-	memzero(digest, SHA1_DIGEST_LENGTH);
+	uc_memzero(digest, SHA1_DIGEST_LENGTH);
 	return buffer;
 }
 
@@ -672,7 +672,7 @@ void sha256_Init(SHA256_CTX* context) {
 		return;
 	}
 	MEMCPY_BCOPY(context->state, sha256_initial_hash_value, SHA256_DIGEST_LENGTH);
-	memzero(context->buffer, SHA256_BLOCK_LENGTH);
+	uc_memzero(context->buffer, SHA256_BLOCK_LENGTH);
 	context->bitcount = 0;
 }
 
@@ -894,7 +894,7 @@ void sha256_Final(SHA256_CTX* context, sha2_byte digest[]) {
 		((uint8_t*)context->buffer)[usedspace++] = 0x80;
 
 		if (usedspace > SHA256_SHORT_BLOCK_LENGTH) {
-			memzero(((uint8_t*)context->buffer) + usedspace, SHA256_BLOCK_LENGTH - usedspace);
+			uc_memzero(((uint8_t*)context->buffer) + usedspace, SHA256_BLOCK_LENGTH - usedspace);
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 			/* Convert TO host byte order */
@@ -909,7 +909,7 @@ void sha256_Final(SHA256_CTX* context, sha2_byte digest[]) {
 			usedspace = 0;
 		}
 		/* Set-up for the last transform: */
-		memzero(((uint8_t*)context->buffer) + usedspace, SHA256_SHORT_BLOCK_LENGTH - usedspace);
+		uc_memzero(((uint8_t*)context->buffer) + usedspace, SHA256_SHORT_BLOCK_LENGTH - usedspace);
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 		/* Convert TO host byte order */
@@ -934,7 +934,7 @@ void sha256_Final(SHA256_CTX* context, sha2_byte digest[]) {
 	}
 
 	/* Clean up state data: */
-	memzero(context, sizeof(SHA256_CTX));
+	uc_memzero(context, sizeof(SHA256_CTX));
 	usedspace = 0;
 }
 
@@ -952,9 +952,9 @@ char *sha256_End(SHA256_CTX* context, char buffer[]) {
 		}
 		*buffer = (char)0;
 	} else {
-		memzero(context, sizeof(SHA256_CTX));
+		uc_memzero(context, sizeof(SHA256_CTX));
 	}
-	memzero(digest, SHA256_DIGEST_LENGTH);
+	uc_memzero(digest, SHA256_DIGEST_LENGTH);
 	return buffer;
 }
 
@@ -980,7 +980,7 @@ void sha512_Init(SHA512_CTX* context) {
 		return;
 	}
 	MEMCPY_BCOPY(context->state, sha512_initial_hash_value, SHA512_DIGEST_LENGTH);
-	memzero(context->buffer, SHA512_BLOCK_LENGTH);
+	uc_memzero(context->buffer, SHA512_BLOCK_LENGTH);
 	context->bitcount[0] = context->bitcount[1] =  0;
 }
 
@@ -1197,7 +1197,7 @@ static void sha512_Last(SHA512_CTX* context) {
 	((uint8_t*)context->buffer)[usedspace++] = 0x80;
 
 	if (usedspace > SHA512_SHORT_BLOCK_LENGTH) {
-		memzero(((uint8_t*)context->buffer) + usedspace, SHA512_BLOCK_LENGTH - usedspace);
+		uc_memzero(((uint8_t*)context->buffer) + usedspace, SHA512_BLOCK_LENGTH - usedspace);
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 		/* Convert TO host byte order */
@@ -1212,7 +1212,7 @@ static void sha512_Last(SHA512_CTX* context) {
 		usedspace = 0;
 	}
 	/* Set-up for the last transform: */
-	memzero(((uint8_t*)context->buffer) + usedspace, SHA512_SHORT_BLOCK_LENGTH - usedspace);
+	uc_memzero(((uint8_t*)context->buffer) + usedspace, SHA512_SHORT_BLOCK_LENGTH - usedspace);
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 	/* Convert TO host byte order */
@@ -1244,7 +1244,7 @@ void sha512_Final(SHA512_CTX* context, sha2_byte digest[]) {
 	}
 
 	/* Zero out state data */
-	memzero(context, sizeof(SHA512_CTX));
+	uc_memzero(context, sizeof(SHA512_CTX));
 }
 
 char *sha512_End(SHA512_CTX* context, char buffer[]) {
@@ -1261,9 +1261,9 @@ char *sha512_End(SHA512_CTX* context, char buffer[]) {
 		}
 		*buffer = (char)0;
 	} else {
-		memzero(context, sizeof(SHA512_CTX));
+		uc_memzero(context, sizeof(SHA512_CTX));
 	}
-	memzero(digest, SHA512_DIGEST_LENGTH);
+	uc_memzero(digest, SHA512_DIGEST_LENGTH);
 	return buffer;
 }
 

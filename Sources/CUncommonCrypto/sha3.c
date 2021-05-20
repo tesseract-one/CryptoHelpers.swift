@@ -48,7 +48,7 @@ static void keccak_Init(SHA3_CTX *ctx, unsigned bits)
     /* NB: The Keccak capacity parameter = bits * 2 */
     unsigned rate = 1600 - bits * 2;
 
-    memzero(ctx, sizeof(SHA3_CTX));
+    uc_memzero(ctx, sizeof(SHA3_CTX));
     ctx->block_size = rate / 8;
     assert(rate <= 1600 && (rate % 64) == 0);
 }
@@ -320,7 +320,7 @@ void sha3_Final(SHA3_CTX *ctx, unsigned char* result)
     if (!(ctx->rest & SHA3_FINALIZED))
     {
         /* clear the rest of the data queue */
-        memzero((char*)ctx->message + ctx->rest, block_size - ctx->rest);
+        uc_memzero((char*)ctx->message + ctx->rest, block_size - ctx->rest);
         ((char*)ctx->message)[ctx->rest] |= 0x06;
         ((char*)ctx->message)[block_size - 1] |= 0x80;
 
@@ -331,7 +331,7 @@ void sha3_Final(SHA3_CTX *ctx, unsigned char* result)
 
     assert(block_size > digest_length);
     if (result) me64_to_le_str(result, ctx->hash, digest_length);
-    memzero(ctx, sizeof(SHA3_CTX));
+    uc_memzero(ctx, sizeof(SHA3_CTX));
 }
 
 #if USE_KECCAK
@@ -349,7 +349,7 @@ void keccak_Final(SHA3_CTX *ctx, unsigned char* result)
     if (!(ctx->rest & SHA3_FINALIZED))
     {
         /* clear the rest of the data queue */
-        memzero((char*)ctx->message + ctx->rest, block_size - ctx->rest);
+        uc_memzero((char*)ctx->message + ctx->rest, block_size - ctx->rest);
         ((char*)ctx->message)[ctx->rest] |= 0x01;
         ((char*)ctx->message)[block_size - 1] |= 0x80;
 
@@ -360,7 +360,7 @@ void keccak_Final(SHA3_CTX *ctx, unsigned char* result)
 
     assert(block_size > digest_length);
     if (result) me64_to_le_str(result, ctx->hash, digest_length);
-    memzero(ctx, sizeof(SHA3_CTX));
+    uc_memzero(ctx, sizeof(SHA3_CTX));
 }
 
 void keccak_256(const unsigned char* data, size_t len, unsigned char* digest)

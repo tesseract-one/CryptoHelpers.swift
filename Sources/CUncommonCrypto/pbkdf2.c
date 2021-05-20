@@ -36,7 +36,7 @@ void pbkdf2_hmac_sha256_Init(PBKDF2_HMAC_SHA256_CTX *pctx, const uint8_t *pass,
 #endif
 
   hmac_sha256_prepare(pass, passlen, pctx->odig, pctx->idig);
-  memzero(pctx->g, sizeof(pctx->g));
+  uc_memzero(pctx->g, sizeof(pctx->g));
   pctx->g[8] = 0x80000000;
   pctx->g[15] = (SHA256_BLOCK_LENGTH + SHA256_DIGEST_LENGTH) * 8;
 
@@ -74,7 +74,7 @@ void pbkdf2_hmac_sha256_Final(PBKDF2_HMAC_SHA256_CTX *pctx, uint8_t *key) {
   }
 #endif
   memcpy(key, pctx->f, SHA256_DIGEST_LENGTH);
-  memzero(pctx, sizeof(PBKDF2_HMAC_SHA256_CTX));
+  uc_memzero(pctx, sizeof(PBKDF2_HMAC_SHA256_CTX));
 }
 
 void pbkdf2_hmac_sha256(const uint8_t *pass, int passlen, const uint8_t *salt,
@@ -111,7 +111,7 @@ void pbkdf2_hmac_sha512_Init(PBKDF2_HMAC_SHA512_CTX *pctx, const uint8_t *pass,
 #endif
 
   hmac_sha512_prepare(pass, passlen, pctx->odig, pctx->idig);
-  memzero(pctx->g, sizeof(pctx->g));
+  uc_memzero(pctx->g, sizeof(pctx->g));
   pctx->g[8] = 0x8000000000000000;
   pctx->g[15] = (SHA512_BLOCK_LENGTH + SHA512_DIGEST_LENGTH) * 8;
 
@@ -150,7 +150,7 @@ void pbkdf2_hmac_sha512_Final(PBKDF2_HMAC_SHA512_CTX *pctx, uint8_t *key) {
   }
 #endif
   memcpy(key, pctx->f, SHA512_DIGEST_LENGTH);
-  memzero(pctx, sizeof(PBKDF2_HMAC_SHA512_CTX));
+  uc_memzero(pctx, sizeof(PBKDF2_HMAC_SHA512_CTX));
 }
 
 void pbkdf2_hmac_sha512(const uint8_t *pass, int passlen, const uint8_t *salt,
