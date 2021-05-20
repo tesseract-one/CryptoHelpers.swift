@@ -104,13 +104,13 @@ public struct SHA1 {
         finalized = false
     }
     
-    public static func hash(_ bytes: [UInt8]) -> [UInt8] {
+    public static func hash(bytes: [UInt8]) -> [UInt8] {
         var out = [UInt8](repeating: 0, count: Int(SHA1_DIGEST_LENGTH))
         sha1_Raw(bytes, bytes.count, &out)
         return out
     }
     
-    public static func hash(_ data: Data) -> [UInt8] {
+    public static func hash(data: Data) -> [UInt8] {
         var out = [UInt8](repeating: 0, count: Int(SHA1_DIGEST_LENGTH))
         data.withUnsafeBytes {
             let ptr = $0.bindMemory(to: UInt8.self)
