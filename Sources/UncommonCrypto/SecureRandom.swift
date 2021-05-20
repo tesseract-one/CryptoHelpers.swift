@@ -20,7 +20,7 @@ public struct SecureRandom {
         return try native(size: size)
     }
     
-    public static func number<T: BinaryInteger>(_ type: T) throws -> T {
+    public static func number<T: BinaryInteger>(of type: T) throws -> T {
         let bytes = try native(size: MemoryLayout<T>.size)
         return bytes.withUnsafeBytes { $0.load(as: T.self) }
     }

@@ -24,7 +24,7 @@ public struct SHA3 {
     private let type: SType
     private var finalized: Bool
     
-    public init(_ type: SType) {
+    public init(type: SType) {
         self.type = type
         self.context = SHA3_CTX()
         self.finalized = true
@@ -65,13 +65,13 @@ public struct SHA3 {
         return out
     }
     
-    public static func hash(_ type: SType, bytes: [UInt8]) -> [UInt8] {
+    public static func hash(type: SType, bytes: [UInt8]) -> [UInt8] {
         return bytes.withUnsafeBufferPointer {
             Self._hash(type: type, bytes: $0)
         }
     }
     
-    public static func hash(_ type: SType, data: Data) -> [UInt8] {
+    public static func hash(type: SType, data: Data) -> [UInt8] {
         return data.withUnsafeBytes {
             Self._hash(type: type, bytes: $0.bindMemory(to: UInt8.self))
         }
@@ -101,7 +101,7 @@ public struct SHA3 {
             sha3_512(bytes.baseAddress, bytes.count, &out)
             return out
         default:
-            var sha3 = SHA3(type)
+            var sha3 = SHA3(type: type)
             sha3._update(bytes: bytes)
             return sha3.finalize()
         }

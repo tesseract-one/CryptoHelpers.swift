@@ -17,7 +17,7 @@ public struct PBKDF2 {
         public let code: Int
     }
     
-    public static func derive(_ type: HmacType, password: [UInt8], salt: [UInt8], iterations: Int = 2048, keyLength: Int = 64) throws -> [UInt8] {
+    public static func derive(type: HmacType, password: [UInt8], salt: [UInt8], iterations: Int = 2048, keyLength: Int = 64) throws -> [UInt8] {
         try _derive(type, password: password, salt: salt,
                     iterations: iterations, keyLength: keyLength)
     }

@@ -23,16 +23,16 @@ public struct SHA1 {
     public mutating func update(_ bytes: [UInt8]) {
         guard !finalized else { return }
         let res = CC_SHA1_Update(&context, bytes, CC_LONG(bytes.count))
-        precondition(res == kCCSuccess, "update failed")
+        precondition(res == 1, "update failed")
     }
     
     public mutating func update(_ data: Data) {
         guard !finalized else { return }
-        let res: CCStatus = data.withUnsafeBytes { ptr in
+        let res: Int32 = data.withUnsafeBytes { ptr in
             let bPtr = ptr.bindMemory(to: UInt8.self)
             return CC_SHA1_Update(&self.context, bPtr.baseAddress, CC_LONG(bPtr.count))
         }
-        precondition(res == kCCSuccess, "update failed")
+        precondition(res == 1, "update failed")
     }
     
     public mutating func finalize() -> [UInt8] {
@@ -40,22 +40,23 @@ public struct SHA1 {
         finalized = true
         var out = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
         let res = CC_SHA1_Final(&out, &context)
-        precondition(res == kCCSuccess, "finalize failed")
+        precondition(res == 1, "finalize failed")
         return out
     }
     
     public mutating func reset() {
+        finalized = false
         let res = CC_SHA1_Init(&context)
-        precondition(res == kCCSuccess, "init failed")
+        precondition(res == 1, "init failed")
     }
     
-    public static func hash(_ bytes: [UInt8]) -> [UInt8] {
+    public static func hash(bytes: [UInt8]) -> [UInt8] {
         var out = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
         CC_SHA1(bytes, CC_LONG(bytes.count), &out)
         return out
     }
     
-    public static func hash(_ data: Data) -> [UInt8] {
+    public static func hash(data: Data) -> [UInt8] {
         var out = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
         data.withUnsafeBytes {
             let ptr = $0.bindMemory(to: UInt8.self)
@@ -121,10 +122,10 @@ public struct SHA1 {
 #endif
 
 extension Data {
-    public var sha1: [UInt8] { SHA1.hash(self) }
+    public var sha1: [UInt8] { SHA1.hash(data: self) }
 }
 
 
 extension Array where Element == UInt8 {
-    public var sha1: [UInt8] { SHA1.hash(self) }
+    public var sha1: [UInt8] { SHA1.hash(bytes: self) }
 }
