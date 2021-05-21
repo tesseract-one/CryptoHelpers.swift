@@ -1,4 +1,4 @@
-# Bip39.swift
+# UncommonCrypto.swift
 
 ![🐧 linux: ready](https://img.shields.io/badge/%F0%9F%90%A7%20linux-ready-red.svg)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202.0-lightgrey.svg)](LICENSE)
