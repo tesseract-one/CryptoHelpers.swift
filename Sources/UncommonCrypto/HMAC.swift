@@ -15,7 +15,7 @@ protocol HMACImpl {
     mutating func reset(key:  UnsafeBufferPointer<UInt8>)
     mutating func update(from: UnsafeBufferPointer<UInt8>)
     mutating func finalize(out: UnsafeMutableBufferPointer<UInt8>)
-    static func sign(
+    static func authenticate(
         out: UnsafeMutableBufferPointer<UInt8>,
         key: UnsafeBufferPointer<UInt8>,
         bytes: UnsafeBufferPointer<UInt8>
@@ -71,26 +71,26 @@ public struct HMAC {
         return out
     }
     
-    public static func sign(type: SType, key: [UInt8], bytes: [UInt8]) -> [UInt8] {
+    public static func authenticate(type: SType, key: [UInt8], bytes: [UInt8]) -> [UInt8] {
         let impl = HMAC.implementation(for: type)
         var out = [UInt8](repeating: 0, count: impl.outSize)
         out.withUnsafeMutableBufferPointer { out in
             key.withUnsafeBufferPointer { key in
                 bytes.withUnsafeBufferPointer { bytes in
-                    impl.sign(out: out, key: key, bytes: bytes)
+                    impl.authenticate(out: out, key: key, bytes: bytes)
                 }
             }
         }
         return out
     }
     
-    public static func sign(type: SType, key: [UInt8], data: Data) -> [UInt8] {
+    public static func authenticate(type: SType, key: [UInt8], data: Data) -> [UInt8] {
         let impl = HMAC.implementation(for: type)
         var out = [UInt8](repeating: 0, count: impl.outSize)
         out.withUnsafeMutableBufferPointer { out in
             key.withUnsafeBufferPointer { key in
                 data.withUnsafeBytes { data in
-                    impl.sign(out: out, key: key, bytes: data.bindMemory(to: UInt8.self))
+                    impl.authenticate(out: out, key: key, bytes: data.bindMemory(to: UInt8.self))
                 }
             }
         }
@@ -138,7 +138,7 @@ struct HMAC_SHA256: CCHMACImpl {
         CCHmacInit(&context, CCHmacAlgorithm(kCCHmacAlgSHA256), key.baseAddress, key.count)
     }
     
-    static func sign(out: UnsafeMutableBufferPointer<UInt8>, key: UnsafeBufferPointer<UInt8>, bytes: UnsafeBufferPointer<UInt8>) {
+    static func authenticate(out: UnsafeMutableBufferPointer<UInt8>, key: UnsafeBufferPointer<UInt8>, bytes: UnsafeBufferPointer<UInt8>) {
         CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA256), key.baseAddress, key.count, bytes.baseAddress, bytes.count, out.baseAddress)
     }
     
@@ -152,7 +152,7 @@ struct HMAC_SHA512: CCHMACImpl {
         CCHmacInit(&context, CCHmacAlgorithm(kCCHmacAlgSHA512), key.baseAddress, key.count)
     }
     
-    static func sign(out: UnsafeMutableBufferPointer<UInt8>, key: UnsafeBufferPointer<UInt8>, bytes: UnsafeBufferPointer<UInt8>) {
+    static func authenticate(out: UnsafeMutableBufferPointer<UInt8>, key: UnsafeBufferPointer<UInt8>, bytes: UnsafeBufferPointer<UInt8>) {
         CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA512), key.baseAddress, key.count, bytes.baseAddress, bytes.count, out.baseAddress)
     }
     
@@ -181,7 +181,7 @@ struct HMAC_SHA256: HMACImpl {
         hmac_sha256_Init(&context, key.baseAddress, UInt32(key.count))
     }
     
-    static func sign(out: UnsafeMutableBufferPointer<UInt8>, key: UnsafeBufferPointer<UInt8>, bytes: UnsafeBufferPointer<UInt8>) {
+    static func authenticate(out: UnsafeMutableBufferPointer<UInt8>, key: UnsafeBufferPointer<UInt8>, bytes: UnsafeBufferPointer<UInt8>) {
         hmac_sha256(key.baseAddress, UInt32(key.count), bytes.baseAddress, UInt32(bytes.count), out.baseAddress)
     }
     
@@ -208,7 +208,7 @@ struct HMAC_SHA512: HMACImpl {
         hmac_sha512_Init(&context, key.baseAddress, UInt32(key.count))
     }
     
-    static func sign(out: UnsafeMutableBufferPointer<UInt8>, key: UnsafeBufferPointer<UInt8>, bytes: UnsafeBufferPointer<UInt8>) {
+    static func authenticate(out: UnsafeMutableBufferPointer<UInt8>, key: UnsafeBufferPointer<UInt8>, bytes: UnsafeBufferPointer<UInt8>) {
         hmac_sha512(key.baseAddress, UInt32(key.count), bytes.baseAddress, UInt32(bytes.count), out.baseAddress)
     }
     

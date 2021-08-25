@@ -100,7 +100,7 @@ let data = Data()
 let key = [UInt8]()
 
 // Simple call API. SHA256 and SHA512 are supported
-let sign1 = HMAC.sign(type: .sha256, key: key, data: data)
+let sign1 = HMAC.authenticate(type: .sha256, key: key, data: data)
 
 // Streaming api
 var hmac = HMAC(type: .sha256, key: key)
