@@ -89,6 +89,27 @@ let hash2 = sha3.finalize()
 assert(hash1 == hash2)
 ```
 
+### HMAC
+```Swift
+import UncommonCrypto
+
+// Some data
+let data = Data()
+
+// Some key
+let key = [UInt8]()
+
+// Simple call API. SHA256 and SHA512 are supported
+let sign1 = HMAC.sign(type: .sha256, key: key, data: data)
+
+// Streaming api
+var hmac = HMAC(type: .sha256, key: key)
+hmac.update(data)
+let sign2 = hmac.finalize()
+
+assert(sign1 == sign2)
+```
+
 ### PBKDF2
 ```Swift
 import UncommonCrypto
