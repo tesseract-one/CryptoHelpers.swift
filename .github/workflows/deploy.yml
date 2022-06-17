@@ -4,12 +4,12 @@ on:
     types: [created]
 jobs:
   publish:
-    runs-on: macOS-latest
+    runs-on: macOS-12
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_11.4.app
+        run: sudo xcode-select -s /Applications/Xcode_13.1.app
       - name: Publish Pod
         run: pod trunk push --allow-warnings
         env:
