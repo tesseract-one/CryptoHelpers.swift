@@ -8,7 +8,10 @@ let package = Package(
     products: [
         .library(
             name: "UncommonCrypto",
-            targets: ["UncommonCrypto"])
+            targets: ["UncommonCrypto"]),
+        .library(
+            name: "CUncommonCrypto",
+            targets: ["CUncommonCrypto"])
     ],
     dependencies: [],
     targets: [
